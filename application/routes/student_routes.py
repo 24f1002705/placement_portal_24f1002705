@@ -1,0 +1,126 @@
+# import necessary modules 
+from flask import Blueprint
+
+# Initialization of blueprint object
+student_bp = Blueprint('student', __name__)
+
+# root for student page
+# empty for now
+@student_bp.route('/')
+def student_index():
+    return
+
+# _____________________________________________________________________________________________
+# 1. routing towards student dashboard
+# Input: student_id from session cookie
+# Output: JSON {}
+@student_bp.route('/dashboard/<student_id>')
+def dashboard(student_id):
+    return
+
+# _____________________________________________________________________________________________
+# 2. Profile Management Functions
+'''View profile
+Edit profile'''
+# 2.1 - View profile
+# Input: student_id from session cookie
+# Output: JSON {student details}
+@student_bp.route('/profile/<student_id>')
+def view_profile(student_id):
+    return
+
+# 2.2 - Edit profile
+# Input: student_id from session cookie + edited details
+# Output: JSON {success: boolean, message: STRING} + updated details in database
+@student_bp.route('/profile/edit/<student_id>')
+def edit_profile(student_id):
+    return
+
+# _____________________________________________________________________________________________
+# 3. Organization Management Functions
+
+# 3.1 - View organizations
+# organizations with drives that the student has applied to or is eligible for
+# Input: student_id from session cookie
+# Output: JSON {}
+@student_bp.route('/organizations/<student_id>')
+def view_organizations(student_id):
+    return
+
+# 3.2 - View single organization and eligible drives
+# Input: organization_id
+# Output: JSON {organization details + drives details}
+@student_bp.route('/organizations/view/<organization_id>')
+def view_organization(organization_id):
+    return
+
+# ____________________________________________________________________________________________
+# 4. Drive Management Functions
+
+# 4.1 - View drives
+# drives that the student has applied to or is eligible for
+# Input: student_id from session cookie
+# Output: JSON {drives: []}
+@student_bp.route('/drives/<student_id>')
+def view_drives(student_id):
+    return
+
+# 4.2 - View single drive and applications
+# Input: drive_id
+# Output: JSON {drive details + applications details}
+@student_bp.route('/drives/view/<drive_id>')
+def view_drive(drive_id):
+    return
+
+# ____________________________________________________________________________________________
+# 5. Application Management Functions
+'''
+Firstly create an application for a drive
+
+Say student accepts a job, 
+    then all the other applications are automatically withdrawn 
+    and the student is marked as placed. 
+If student rejects a job, 
+    then the application is marked as rejected 
+    and the student can apply to other jobs.
+
+Be able to view all applications and their status in a separate page.
+
+Be able to see each application and its details in a separate page.
+
+Be able to update the status of each application (accept or reject offer) in the single application page.
+
+Be able to update the application information (eg. resume) until the application deadline has passed.
+'''
+# 5.1 - Create application
+# Input: student_id from session cookie + drive_id + application details
+# Output: JSON {success: boolean, message: STRING} + application added to applications table
+@student_bp.route('/applications/create')
+def create_application():
+    return
+
+# 5.2 - View applications
+# Input: student_id from session cookie
+# Output: JSON {applications: []}
+@student_bp.route('/applications/<student_id>')
+def view_applications(student_id):
+    return
+
+# 5.3 - View single application
+@student_bp.route('/applications/view/<application_id>')
+def view_application(application_id):
+    return
+
+# 5.4 - Update application
+# Input: application_id + new details (eg. resume)
+# Output: JSON {success: boolean, message: STRING} + application details updated in applications table
+@student_bp.route('/applications/update/<application_id>')
+def update_application(application_id):
+    return
+
+# 5.5 - Update application status (accept or reject offer)
+# Input: application_id + new status (accepted or rejected)
+# Output: JSON {success: boolean, message: STRING} + application status updated in applications table
+@student_bp.route('/applications/update-status/<application_id>')
+def update_application_status(application_id):
+    return

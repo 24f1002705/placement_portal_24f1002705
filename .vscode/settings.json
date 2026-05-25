@@ -1,0 +1,55 @@
+{
+    "customFileOrder.rules": {
+        "c:\\Users\\siddh\\OneDrive\\Documents\\Obsidian notes\\IITM Notes\\placement_portal_24f1002705": {
+            "order": [
+                "venv",
+                "app.py",
+                "config.py",
+                "instance",
+                "application",
+                "README.md",
+                "requirements.txt",
+                ".vscode"
+            ],
+            "type": "manual"
+        },
+        "c:\\Users\\siddh\\OneDrive\\Documents\\Obsidian notes\\IITM Notes\\placement_portal_24f1002705\\application": {
+            "order": [
+                "__init__.py",
+                "models",
+                "routes",
+                "services",
+                "tasks",
+                "cache",
+                "static",
+                "templates",
+                "utils"
+            ],
+            "type": "manual"
+        },
+        "c:\\Users\\siddh\\OneDrive\\Documents\\Obsidian notes\\IITM Notes\\placement_portal_24f1002705\\application\\models": {
+            "order": [
+                "__init__.py"
+            ],
+            "type": "manual"
+        },
+        "c:\\Users\\siddh\\OneDrive\\Documents\\Obsidian notes\\IITM Notes\\placement_portal_24f1002705\\application\\routes": {
+            "order": [
+                "__init__.py",
+                "auth_routes.py",
+                "admin_routes.py",
+                "company_routes.py",
+                "student_routes.py",
+                "index.html",
+                "__pycache__"
+            ],
+            "type": "manual"
+        },
+        "c:\\Users\\siddh\\OneDrive\\Documents\\Obsidian notes\\IITM Notes\\placement_portal_24f1002705\\application\\templates": {
+            "order": [
+                "index.html"
+            ],
+            "type": "manual"
+        }
+    }
+}
