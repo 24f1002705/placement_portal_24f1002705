@@ -75,3 +75,4 @@ def view_application(application_id):
 def update_application(application_id):
     return
 
+
