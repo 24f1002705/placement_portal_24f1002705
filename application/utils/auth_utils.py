@@ -9,7 +9,7 @@ def get_registration_data(request):
     # return registration data as a dictionary
     return
 
-def get_password_data(request):
+def get_passwords(request):
     # extract password change data from request JSON
     # return password change data as a dictionary
     return
@@ -23,4 +23,3 @@ def hash_password(password):
     # hash the password using a secure hashing algorithm
     # return the hashed password
     return
-

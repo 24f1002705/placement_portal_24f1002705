@@ -19,7 +19,7 @@ def login_session(user):
     '''
     return
 
-def logout_session():
+def logout():
     '''
     clear the session cookie to log out the user
     '''
@@ -31,7 +31,7 @@ def verify_user():
     '''
     return
 
-def change_user_password(data):
+def change_password(data):
     '''
     data has structure {user_id: INT, old_password: STRING, new_password: STRING}
     '''

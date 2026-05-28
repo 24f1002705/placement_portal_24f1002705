@@ -100,7 +100,7 @@ def register_verify():
 # clear the session cookie
 @auth_bp.route('/logout')
 def logout():
-    return(a_s.logout_session())
+    return(a_s.logout())
 
 # ____________________________________________________________________________________________
 # 4. change password
@@ -112,9 +112,9 @@ def change_password():
     # 2. verify old_password is correct for the user_id
     # 3. if correct, update password to new_password and return success with message "password changed successfully"
     # 4. else return failure with message "incorrect old password"
-    data = a_u.get_password_data(request)
+    data = a_u.get_passwords(request)
     # data has structure {user_id: INT, old_password: STRING, new_password: STRING}
-    result = a_s.change_user_password(data)
+    result = a_s.change_password(data)
     # result has structure {success: boolean, message: STRING}
     return jsonify(result)
 
