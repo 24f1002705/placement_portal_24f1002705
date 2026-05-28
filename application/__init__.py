@@ -1,5 +1,6 @@
 # Agglomerate all resources and packages to return an app instance to app.py to start the server
 from flask import Flask
+from flask import SQLAlchemy
 from application.routes.auth_routes import auth_bp
 from application.routes.admin_routes import admin_bp
 from application.routes.company_routes import company_bp
@@ -11,6 +12,14 @@ def create_app():
     app = Flask(__name__)
 
     # load config
+    app.config.from_object('config.Config')
+
+    # load database
+    # create database object
+    db = SQLAlchemy()
+
+    # initialize database object with app
+    db.init_app(app)
 
     # register routes
     app.register_blueprint(auth_bp, url_prefix='/api/auth')

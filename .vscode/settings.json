@@ -29,7 +29,12 @@
         },
         "c:\\Users\\siddh\\OneDrive\\Documents\\Obsidian notes\\IITM Notes\\placement_portal_24f1002705\\application\\models": {
             "order": [
-                "__init__.py"
+                "__init__.py",
+                "user.py",
+                "student.py",
+                "company.py",
+                "drive.py",
+                "application.py"
             ],
             "type": "manual"
         },
@@ -48,6 +53,18 @@
         "c:\\Users\\siddh\\OneDrive\\Documents\\Obsidian notes\\IITM Notes\\placement_portal_24f1002705\\application\\templates": {
             "order": [
                 "index.html"
+            ],
+            "type": "manual"
+        },
+        "c:\\Users\\siddh\\OneDrive\\Documents\\Obsidian notes\\IITM Notes\\placement_portal_24f1002705\\application\\services": {
+            "order": [
+                "auth_services.py"
+            ],
+            "type": "manual"
+        },
+        "utils": {
+            "order": [
+                "auth_utils.py"
             ],
             "type": "manual"
         }

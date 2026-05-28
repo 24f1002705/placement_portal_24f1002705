@@ -11,7 +11,7 @@ def index():
     # If user is already logged in, redirect to their dashboard based on user type
     # else redirect to login page
     # done in the auth page only
-    return redirect('/auth/')
+    return redirect('/api/auth/')
 
 # starts the app
 if __name__ == '__main__':
