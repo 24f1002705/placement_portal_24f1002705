@@ -23,3 +23,8 @@ def hash_password(password):
     # hash the password using a secure hashing algorithm
     # return the hashed password
     return
+
+def get_current_user():
+    # extract user_id and user_type from session cookie
+    # return current user data as a dictionary
+    return
