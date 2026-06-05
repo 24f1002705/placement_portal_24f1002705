@@ -10,11 +10,11 @@ from application import db
 # Status
 
 class Company(db.Model):
+    # primary key, auto-incrementing integer (company_id)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
     # foreign key to user_id in User table
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-    # primary key, auto-incrementing integer
-    company_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     # company_name - string, not null
     company_name = db.Column(db.String(100), unique=True, nullable=False)
@@ -46,7 +46,7 @@ class Company(db.Model):
     
     def to_dict(self):
         return {
-            'company_id': self.company_id,
+            'company_id': self.id,
             'company_name': self.company_name,
             'logo': self.logo,
             'description': self.description,

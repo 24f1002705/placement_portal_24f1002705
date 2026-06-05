@@ -7,8 +7,8 @@ from application import db
 # company_id/student_id -> corresponding foreign key
 
 class User(db.Model):
-    # user_id - primary key, auto-incrementing integer
-    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    # id - primary key, auto-incrementing integer
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     # email - unique string, not null
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -23,14 +23,14 @@ class User(db.Model):
     role = db.Column(db.String(20), nullable=False)
 
     # role_id - integer, foreign key to respective role table (e.g., company_id, student_id)
-    role_id = db.Column(db.Integer, db.ForeignKey('company.company_id'), nullable=False)
+    role_id = db.Column(db.Integer, nullable=True)
 
     def __repr__(self):
         return f'<User {self.username}>'
     
     def to_dict(self):
         return {
-            'user_id': self.user_id,
+            'user_id': self.id,
             'email': self.email,
             'username': self.username,
             'role': self.role,

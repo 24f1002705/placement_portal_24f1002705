@@ -15,8 +15,8 @@ from application import db
 # status (active, inactive, completed)
 
 class Drive(db.Model):
-    # primary key, auto-incrementing integer
-    drive_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    # primary key, auto-incrementing integer (drive_id)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     # drive_name - string, not null
     drive_name = db.Column(db.String(100), nullable=False)
@@ -59,7 +59,7 @@ class Drive(db.Model):
     
     def to_dict(self):
         return {
-            'drive_id': self.drive_id,
+            'drive_id': self.id,
             'drive_name': self.drive_name,
             'company_id': self.company_id,
             'company_name': self.company_name,

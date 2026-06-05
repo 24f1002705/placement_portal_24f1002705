@@ -1,4 +1,3 @@
-# file to store configuration variables for the application
 '''
 Stores configuration.
 
@@ -15,7 +14,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     # Database configuration
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, "instance", 'app.db')
+    DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, "instance", 'app.db')
 
     SECRET_KEY = 'secret_key'
     '''

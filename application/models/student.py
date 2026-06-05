@@ -11,11 +11,11 @@ from application import db
 # Resume Link 
 # Status
 class Student(db.Model):
+    # primary key, auto-incrementing integer (student_id)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    
     # foreign key to user_id in User table
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-    # primary key, auto-incrementing integer
-    student_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     # name - string, not null
     name = db.Column(db.String(100), nullable=False)
@@ -51,7 +51,7 @@ class Student(db.Model):
     
     def to_dict(self):
         return {
-            'student_id': self.student_id,
+            'student_id': self.id,
             'name': self.name,
             'email': self.email,
             'department': self.department,

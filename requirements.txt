@@ -2,3 +2,4 @@ Flask
 Flask-SQLAlchemy
 Celery
 redis
+sqlite3
