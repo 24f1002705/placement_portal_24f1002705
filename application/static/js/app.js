@@ -12,7 +12,8 @@ const app = Vue.createApp({
 
         return {
 
-            currentRoute: "login"
+            currentRoute: "login",
+            routeData: {} // passed to components when navigating.
 
         }
 
@@ -26,12 +27,33 @@ const app = Vue.createApp({
     methods: {
 
         // Change visible page/component.
-        navigate(routeName) {
+        navigate(routeName, data = {}) {
 
             this.currentRoute = routeName
+            this.routeData = data
 
+        },
+
+        manageProfile(role) {
+            this.navigate('profile', {role: role})
+        },
+
+        changePassword() {
+            this.navigate('change_password')
+        },
+
+        async logout() {
+            const response = await fetch("/api/auth/logout")
+
+            const result = await response.json()
+
+            if (result.success) {
+                this.navigate("login")
+            } 
+            else {
+                alert("Logout failed. Please try again.")
+            }
         }
-
     },
 
 
@@ -71,15 +93,15 @@ const app = Vue.createApp({
 
         if (data.success) {
             if (data.data.user_type === "admin") {
-                this.navigate("admin_dashboard")
+                this.navigate("admin_dashboard", data.data)
             }
 
             if (data.data.user_type === "student") {
-                this.navigate("student_dashboard")
+                this.navigate("student_dashboard", data.data)
             }
 
             if (data.data.user_type === "company") {
-                this.navigate("company_dashboard")
+                this.navigate("company_dashboard", data.data)
             }
         }
 
@@ -95,6 +117,11 @@ const app = Vue.createApp({
     <component
         :is="currentComponent"
         :navigate="navigate"
+        :routeData="routeData"
+        :key="JSON.stringify(routeData)"
+        :manageProfile="manageProfile"
+        :changePassword="changePassword"
+        :logout="logout"
     />
 
     `

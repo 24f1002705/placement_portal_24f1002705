@@ -48,14 +48,26 @@ def logout():
     return result
 
 def get_registration_data(request):
-    # extract registration data from request JSON
-    # return registration data as a dictionary
-    return
+
+    data = request.get_json()
+
+    return {
+        "role": data.get("role"),
+        "email": data.get("email"),
+        "username": data.get("username"),
+        "password": data.get("password"),
+        "student": data.get("student"),
+        "company": data.get("company")
+    }
 
 def get_passwords(request):
     # extract password change data from request JSON
     # return password change data as a dictionary
-    return
+    request.get_json()
+    data = {}
+    data['old_password'] = request.json.get('old_password')
+    data['new_password'] = request.json.get('new_password')
+    return data
 
 def get_session_data():
     # extract user_id and user_type from session cookie
@@ -73,5 +85,13 @@ def hash_password(password):
 def get_current_user():
     # extract user_id and user_type from session cookie
     # return current user data as a dictionary
-    return
+    user = {}
+    session_data = get_session_data()
+    if session_data['user_id'] and session_data['user_type']:
+        user['user_id'] = session_data['user_id']
+        user['user_type'] = session_data['user_type']
+        user['role_id'] = session_data['role_id']
+    else:
+        user = None
+    return user
 

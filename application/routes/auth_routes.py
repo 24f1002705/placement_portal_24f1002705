@@ -1,5 +1,7 @@
 # import necessary modules 
-from flask import Blueprint, render_template, jsonify
+from unittest import result
+
+from flask import Blueprint, redirect, render_template, jsonify
 import application.services.auth_services as a_s
 import application.utils.auth_utils as a_u
 from flask import request
@@ -15,7 +17,7 @@ auth_bp = Blueprint('auth', __name__)
 # Input: JSON
 @auth_bp.route('/')
 def auth_index():
-    return render_template('index.html')
+    return redirect('/')
 
 # 1.2 - for verification of credentials for login.
 # Input: Credentials from login page
@@ -27,6 +29,8 @@ def login():
     result = return_empty_JSON()
     if user['exists']: 
         result = a_u.login_session(user)
+    else:
+        result['message'] = "Invalid email or password"
     return jsonify(result)
 
 # 1.3 - for verification in case if user is already logged in and tries to access the login page again.
@@ -93,7 +97,7 @@ def logout():
 # ____________________________________________________________________________________________
 # 4. change password
 # Input JSON {user_id: (from session cookie), old_password: STRING, new_password: STRING}
-@auth_bp.route('/change-password')
+@auth_bp.route('/change-password', methods=['POST'])
 def change_password():
     # Process
     # 1. receive user_id from session cookie and old_password, new_password from request JSON
@@ -102,10 +106,17 @@ def change_password():
     # 4. else return failure with message "incorrect old password"
     data = a_u.get_passwords(request)
     # data has structure {user_id: INT, old_password: STRING, new_password: STRING}
-    session = a_u.get_session_data()
+    session_data = a_u.get_current_user()
     result = return_empty_JSON()
-    if a_s.verify_password(session['user_id'], data['old_password']):
-        result = a_s.change_password(data)
+    if not session_data['user_id']:
+        result['message'] = "No active session"
+        return jsonify(result)
+    
+    verified = a_s.verify_password(session_data['user_id'], data['old_password'])
+    if verified:
+        result = a_s.change_password(data, session_data)
+    else:
+        result['message'] = "Incorrect old password"
     # result has structure {success: boolean, message: STRING}
     return jsonify(result)
 

@@ -7,8 +7,8 @@ def admin_required(f):
 
     @wraps(f)
     def wrapper(*args, **kwargs):
-
-        if get_current_user["user_type"] != "admin":
+        user = get_current_user()
+        if user["user_type"] != "admin":
 
             return jsonify({
                 "success": False,
@@ -24,7 +24,8 @@ def company_required(f):
 
     @wraps(f)
     def wrapper(*args, **kwargs):
-        if get_current_user['user_type'] != 'company':
+        user = get_current_user()
+        if user['user_type'] != 'company':
             return jsonify({
                 "success": False,
                 "message": "Unauthorized",
@@ -40,7 +41,8 @@ def student_required(f):
 
     @wraps(f)
     def wrapper(*args, **kwargs):
-        if get_current_user['user_type'] != 'student':
+        user = get_current_user()
+        if  user['user_type'] != 'student':
             return jsonify({
                 "success": False,
                 "message": "Unauthorized",

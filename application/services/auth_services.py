@@ -3,6 +3,7 @@ import application.services.db_services as dbs
 from werkzeug.security import generate_password_hash, check_password_hash
 from application.utils.helpers import return_empty_JSON
 from application.utils.constants import session_variables
+from application.utils.auth_utils import get_session_data
 
 
 def verify_credentials(credentials):
@@ -56,9 +57,17 @@ def verify_user(session_data):
         result['data'] = user
     return result
 
-def change_password(data):
+def change_password(data, session_data):
     '''
     data has structure {user_id: INT, old_password: STRING, new_password: STRING}
     '''
-    return
+    out = return_empty_JSON()
+    try:
+        dbs.modify_element('user', 'id', session_data['user_id'], {'password_hash': data['new_password']})
+        out['success'] = 1
+        out['message'] = "Password changed successfully"
+        out['data'] = {'user_id': session_data['user_id'], 'user_type': session_data['user_type']}
+    except Exception as e:
+        out['message'] = f"Error changing password, {str(e)}"
+    return out
 

@@ -46,7 +46,7 @@ def view_student_data(student_id):
 # 2.3 - Blacklist students
 # Input: student_id
 # Output: JSON {success: boolean, message: STRING}
-@admin_bp.route('/students/<student_id>/blacklist/')
+@admin_bp.route('/students/blacklist/<student_id>')
 @admin_required
 def blacklist_student(student_id):
     return jsonify(admin_services.blacklist_student(student_id))
@@ -54,7 +54,7 @@ def blacklist_student(student_id):
 # 2.4 - Deactivate students
 # Input: student_id
 # Output: JSON {success: boolean, message: STRING}
-@admin_bp.route('/students/<student_id>/deactivate/')
+@admin_bp.route('/students/deactivate/<student_id>')
 @admin_required
 def deactivate_student(student_id):
     return jsonify(admin_services.deactivate_student(student_id))
@@ -78,7 +78,7 @@ def view_companies():
 # 3.2 - View single company for more details
 # Input: company_id
 # Output: Return a JSON of all details of the company
-@admin_bp.route('/companies/view/<company_id>')
+@admin_bp.route('/companies/<company_id>')
 @admin_required
 def view_company(company_id):
     return jsonify(admin_services.get_company_data(company_id))
@@ -126,7 +126,7 @@ def view_drives():
 # 4.2 - View single drive for more details
 # Input: drive_id
 # Output: Return a JSON of all details of the drive
-@admin_bp.route('/drives/view/<drive_id>')
+@admin_bp.route('/drives/<drive_id>')
 @admin_required
 def view_drive_admin(drive_id):
     return jsonify(admin_services.get_drive_data(drive_id))
@@ -146,6 +146,14 @@ def approve_drives(drive_id):
 @admin_required
 def reject_drives(drive_id):
     return jsonify(admin_services.reject_drive(drive_id))
+
+# _____________________________________________________________________________________________
+# applications route
+
+@admin_bp.route('/applications')
+@admin_required
+def view_applications():
+    return(jsonify(admin_services.get_applications()))
 
 # _____________________________________________________________________________________________
 # 5. Search Function

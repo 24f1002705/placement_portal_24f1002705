@@ -98,37 +98,61 @@ export default {
 
     template: `
 
-    <div class="container mt-5">
+    <body class="d-flex justify-content-center align-items-center vh-100">
+        <div class="card p-4 shadow-lg" style="width: 450px;">
+            <div class="p-4">
+                <h1 class="text-center">Welcome to Placement Portal</h1>
+            </div>
+            <h3 class="text-center">Please Login</h3>
+            <form>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username (E-mail)</label>
+                    <input
+                        v-model="email"
+                        class="form-control mb-3"
+                        placeholder="Email"
+                    >
+                </div>
 
-        <h1>Login</h1>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input
+                        v-model="password"
+                        type="password"
+                        class="form-control mb-3"
+                        placeholder="Password"
+                    >
+                </div>
 
-        <input
-            v-model="email"
-            class="form-control mb-3"
-            placeholder="Email"
-        >
+                <div class="d-grid">
+                    <button
+                        type="button"
+                        @click="login"
+                        class="btn btn-primary"
+                    >
+                        Login
+                    </button>
+                    <p class="text-danger mt-3">
+                        {{ error }}
+                    </p>
+                </div>
+                <div class="text-center mt-3">
 
-        <input
-            v-model="password"
-            type="password"
-            class="form-control mb-3"
-            placeholder="Password"
-        >
+                    <span>
+                        Don't have an account?
+                    </span>
 
-        <button
-            @click="login"
-            class="btn btn-primary"
-        >
-            Login
-        </button>
+                    <a
+                        href="#"
+                        @click.prevent="navigate('register')">
 
-        <p class="text-danger mt-3">
+                        Register here
 
-            {{ error }}
+                    </a>
 
-        </p>
-
-    </div>
-
+                </div>
+            </form>
+        </div>
+    </body>
     `
 }
