@@ -163,4 +163,5 @@ def view_applications():
 @admin_bp.route('/search/<query>')
 @admin_required
 def search(query):
+    print(query)
     return jsonify(admin_services.search(query))

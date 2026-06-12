@@ -1,7 +1,7 @@
 # import db_services
 import application.services.db_services as dbs
 from application.utils.helpers import return_empty_JSON, orchestrate_JSON, db_to_dict
-from application.utils.constants import company_statuses, student_statuses, drive_statuses, entities, application_statuses
+from application.utils.constants import company_statuses, student_statuses, drive_statuses, entities, application_statuses, search_entities
 
 
 # ADMIN SERVICES
@@ -152,8 +152,12 @@ def get_applications():
 # _____________________________________________________________________________________________
 # 6. Search Function
 def search(query):
-    search = dbs.get_search(query)
-    return(orchestrate_JSON(search))
+    db_in = {}
+    for entity in search_entities:
+        db_in[entity] = dbs.get_search(entity, query)
+    out = db_to_dict(db_in)
+    print(out)
+    return(orchestrate_JSON(out))
 
 # _____________________________________________________________________________________________
 # 7. Auxilary functions for services

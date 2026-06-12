@@ -45,6 +45,7 @@ export default {
                         </a>
                     </li>
 
+
                 </ul>
 
                 <div class="dropdown">
@@ -111,21 +112,6 @@ export default {
 
         </nav>
 
-
-        <!-- SEARCH BOX -->
-
-        <div
-            v-if="showSearch"
-            class="container mt-3">
-
-            <input
-                class="form-control"
-                placeholder="Search..."
-                v-model="searchText">
-
-        </div>
-
-
         <!-- WELCOME BANNER -->
 
         <div class="container mt-4">
@@ -142,6 +128,43 @@ export default {
 
             </div>
 
+        </div>
+
+        <!-- SEARCH BOX -->
+        <div class="container py-4">
+
+            <div class="row">
+
+                <div class="col-12">
+
+                    <div class="input-group">
+
+                        <!-- Left Half: Search Text -->
+
+                        <input
+                            v-model="searchText"
+                            type="text"
+                            class="form-control"
+                            placeholder="Search..."
+                        >
+
+                        <!-- Right Half Right: Search Button -->
+
+                        <button
+                            class="btn btn-primary"
+                            @click="search"
+                        >
+
+                            Search
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+        
         </div>
 
 
@@ -498,7 +521,9 @@ export default {
 
                 }
 
-            }
+            },
+
+                searchText: ""
 
         }
 
@@ -601,8 +626,31 @@ export default {
 
         async rejectDrive(id) {
             this.action_entity('drives', 'reject', id)
-        }
+        },
 
+        // search
+        async search() {
+
+            if (!this.searchText.trim()) {
+
+                alert("Please enter a search term")
+
+                return
+
+            }
+
+            console.log(this.searchText)
+
+            this.navigate(
+                "admin_search",
+                {
+                    search: this.searchText
+                }
+
+            )
+
+        }
+        
     },
 
     mounted() {

@@ -36,6 +36,7 @@ def SQL_insert(query):
     try:
         cursor.execute(query)
         conn.commit()
+        print(cursor.lastrowid)
         return cursor.lastrowid
     except Exception as e:
         conn.rollback()

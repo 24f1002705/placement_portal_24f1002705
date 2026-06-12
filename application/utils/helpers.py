@@ -24,3 +24,6 @@ def db_to_dict(db_output):
     for key in keys:
         out[key] = [ dict(row) for row in db_output[key] ]
     return out
+
+def rows_to_dict(rows):
+    return [dict(row) for row in rows]

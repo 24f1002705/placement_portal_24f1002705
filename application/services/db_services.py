@@ -1,5 +1,6 @@
 import application.executors.db_executors as dbe
 from application.utils.constants import search_entities, corresponding_names
+from application.utils.helpers import db_to_dict
 
 # 6.1 - Get count of entities with a certain status
 def get_count(entity, status):
@@ -65,14 +66,37 @@ def get_groups(entity, statuses):
         out[status] = get_element(entity, 'status', status)
     return out
 
-def get_search(query):
-    out  = {}
-    for entity in search_entities:
-        name = corresponding_names['entity']
-        out[entity] = dbe.SQL_fetch(f"SELECT * FROM {entity} WHERE {name} LIKE {query}")
-        
+def get_search(entity, query):
+    name = corresponding_names[entity]
+    print(f"SELECT * FROM {entity} WHERE {name} LIKE '%{query}%'")
+    out = dbe.SQL_fetch(f"SELECT * FROM {entity} WHERE {name} LIKE '%{query}%'")
+    print(out)
     return out
 
-def add_row(data):
-    if 
-    return
+def add_row(table, data):
+
+    columns = ", ".join(data.keys())
+
+    values = []
+
+    for value in data.values():
+
+        if value is None:
+            values.append("NULL")
+
+        elif isinstance(value, str):
+            values.append(f"'{value}'")
+
+        else:
+            values.append(str(value))
+
+    values = ", ".join(values)
+
+    query = f"""
+    INSERT INTO {table}
+    ({columns})
+    VALUES
+    ({values})
+    """
+
+    return dbe.SQL_insert(query)

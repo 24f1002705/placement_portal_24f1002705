@@ -282,7 +282,7 @@ export default {
         },
 
         async deactivateStudent(id) {
-            this.entity_action('students', 'deactivate', id)
+            this.action_entity('students', 'deactivate', id)
         },
 
         // helper functions

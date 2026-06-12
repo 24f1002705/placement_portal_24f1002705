@@ -36,10 +36,85 @@ def verify_password(user_id, old_password):
     return False
 
 def register_user(registration_data):
-    '''
-    registration_data has structure {login: {email, username, passsword}, user_type: STRING, user: {}, company:{}, student: {}}
-    '''
-    return
+    out = return_empty_JSON()
+    email = registration_data["email"]
+    username = registration_data["username"]
+    existing_email = dbs.get_element("user", "email", email)
+    
+    if existing_email:
+        out["message"] = "Email already exists"
+        return out
+
+    existing_username = dbs.get_element("user", "username", username)
+
+    if existing_username:
+        out["message"] = "Username already exists"
+        return out
+
+    user_id = dbs.add_row(
+        "user",
+        {
+            "email": email,
+            "username": username,
+            "password_hash": registration_data["password"],
+            "role": registration_data["role"],
+            "role_id": None
+        }
+    )
+
+    if not user_id:
+        out["message"] = "Failed to create user"
+        return out
+
+    role_id = None
+
+    if registration_data["role"] == "student":
+        student = registration_data["student"]
+        role_id = dbs.add_row(
+            "student",
+            {
+                "user_id": user_id,
+                "name": student["name"],
+                "email": email,
+                "degree": student["degree"],
+                "department": student["department"],
+                "year": student["year"],
+                "graduation_batch": student["graduation_batch"],
+                "gpa": student["gpa"],
+                "resume_link": student["resume_link"],
+                "status": "approved"
+            }
+
+        )
+
+    elif registration_data["role"] == "company":
+        company = registration_data["company"]
+        role_id = dbs.add_row(
+            "company",
+            {
+                "user_id": user_id,
+                "company_name":company["company_name"],
+                "logo": company["logo"],
+                "description": company["description"],
+                "website": company["website"],
+                "email": email,
+                "hr_contact_name": company["hr_contact_name"],
+                "hr_contact_number": company["hr_contact_number"],
+                "status": "registered"
+            }
+        )
+
+    if not role_id:
+        out["message"] = "Failed to create role record"
+        return out
+
+    dbs.modify_element('user', 'id', user_id, {'role_id': role_id})
+
+    out["success"] = 1
+
+    out["message"] = "Registration successful. Please login."
+
+    return out
 
 def verify_user(session_data):
     '''

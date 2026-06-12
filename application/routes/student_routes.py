@@ -1,5 +1,7 @@
 # import necessary modules 
-from flask import Blueprint
+from flask import Blueprint, jsonify
+from application.utils.decorators import student_required
+from application.services import student_services as ss
 
 # Initialization of blueprint object
 student_bp = Blueprint('student', __name__)
@@ -14,9 +16,11 @@ def student_index():
 # 1. routing towards student dashboard
 # Input: student_id from session cookie
 # Output: JSON {}
-@student_bp.route('/dashboard/<student_id>')
-def dashboard(student_id):
-    return
+
+@student_bp.route('/dashboard')
+@student_required
+def dashboard():
+    return jsonify(ss.get_dashboard())
 
 # _____________________________________________________________________________________________
 # 2. Profile Management Functions
@@ -25,16 +29,16 @@ Edit profile'''
 # 2.1 - View profile
 # Input: student_id from session cookie
 # Output: JSON {student details}
-@student_bp.route('/profile/<student_id>')
+@student_bp.route('/profile/')
 def view_profile(student_id):
-    return
+    return jsonify(ss.get_profile())
 
 # 2.2 - Edit profile
 # Input: student_id from session cookie + edited details
 # Output: JSON {success: boolean, message: STRING} + updated details in database
-@student_bp.route('/profile/edit/<student_id>')
-def edit_profile(student_id):
-    return
+@student_bp.route('/profile/edit/')
+def edit_profile(student_id, new_data):
+    return jsonify(ss.edit_profile())
 
 # _____________________________________________________________________________________________
 # 3. Organization Management Functions
@@ -43,9 +47,9 @@ def edit_profile(student_id):
 # organizations with drives that the student has applied to or is eligible for
 # Input: student_id from session cookie
 # Output: JSON {}
-@student_bp.route('/organizations/<student_id>')
-def view_organizations(student_id):
-    return
+@student_bp.route('/organizations/')
+def view_organizations():
+    return 
 
 # 3.2 - View single organization and eligible drives
 # Input: organization_id

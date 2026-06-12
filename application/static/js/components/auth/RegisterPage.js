@@ -4,6 +4,81 @@ export default {
         "navigate"
     ],
 
+    computed: {
+
+        departments() {
+
+            return [
+
+                "Computer Science and Engineering",
+                "Electrical Engineering",
+                "Electronics and Communication Engineering",
+                "Mechanical Engineering",
+                "Civil Engineering",
+                "Chemical Engineering",
+                "Aerospace Engineering",
+                "Industrial Engineering",
+                "Engineering Physics",
+                "Materials Engineering",
+                "Biotechnology",
+                "Physics",
+                "Chemistry",
+                "Mathematics",
+                "Statistics",
+                "Data Science",
+                "Economics",
+                "Management Studies",
+                "English",
+                "History",
+                "Philosophy",
+                "Psychology",
+                "Political Science",
+                "Sociology"
+
+            ]
+
+        },
+
+        graduationYears() {
+
+            const years = []
+
+            for(let year = 2010; year <= 2030; year++) {
+
+                years.push(year)
+
+            }
+
+            return years
+
+        },
+
+        availableYears() {
+
+            const yearMap = {
+
+                "BSc": [1,2,3],
+
+                "BSc(H)": [1,2,3,4],
+
+                "B.Tech/BE": [1,2,3,4],
+
+                "MSc": [1,2],
+
+                "M.Tech/ME": [1,2],
+
+                "PhD": [1,2,3,4,5,6]
+
+            }
+
+            return yearMap[
+                this.student.degree
+            ] || []
+
+        }
+
+    },
+
     data() {
 
         return {
@@ -223,25 +298,84 @@ export default {
                     class="form-control mb-2"
                     placeholder="Name">
 
-                <input
+                <select
                     v-model="student.degree"
-                    class="form-control mb-2"
-                    placeholder="Degree">
+                    @change="student.year=''"
+                    class="form-select mb-2">
 
-                <input
+                    <option disabled value="">
+                        Select Degree
+                    </option>
+
+                    <option>BSc</option>
+
+                    <option>BSc(H)</option>
+
+                    <option>MSc</option>
+
+                    <option>B.Tech/BE</option>
+
+                    <option>M.Tech/ME</option>
+
+                    <option>PhD</option>
+
+                </select>
+
+                <select
                     v-model="student.department"
-                    class="form-control mb-2"
-                    placeholder="Department">
+                    class="form-select mb-2">
 
-                <input
+                    <option disabled value="">
+                        Select Department
+                    </option>
+
+                    <option
+                        v-for="department in departments"
+                        :key="department">
+
+                        {{ department }}
+
+                    </option>
+
+                </select>
+
+                <select
                     v-model="student.year"
-                    class="form-control mb-2"
-                    placeholder="Year">
+                    class="form-select mb-2">
 
-                <input
+                    <option disabled value="">
+                        Select Year
+                    </option>
+
+                    <option
+                        v-for="year in availableYears"
+                        :key="year"
+                        :value="year">
+
+                        {{ year }}
+
+                    </option>
+
+                </select>
+
+                <select
                     v-model="student.graduation_batch"
-                    class="form-control mb-2"
-                    placeholder="Graduation Batch">
+                    class="form-select mb-2">
+
+                    <option disabled value="">
+                        Select Graduation Batch
+                    </option>
+
+                    <option
+                        v-for="year in graduationYears"
+                        :key="year"
+                        :value="year">
+
+                        {{ year }}
+
+                    </option>
+
+                </select>
 
                 <input
                     v-model="student.gpa"

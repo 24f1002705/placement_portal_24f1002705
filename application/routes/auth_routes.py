@@ -31,6 +31,7 @@ def login():
         result = a_u.login_session(user)
     else:
         result['message'] = "Invalid email or password"
+    print(result)
     return jsonify(result)
 
 # 1.3 - for verification in case if user is already logged in and tries to access the login page again.
@@ -58,7 +59,7 @@ Input: Registration JSON
 Output: JSON {success: boolean, message: STRING} + redirect to login page if success'''
 
 # 2.1 - registration
-@auth_bp.route('/register/')
+@auth_bp.route('/register', methods=['POST'])
 def register():
     # Process
     # 1. receive registration credentials from registration page

@@ -14,9 +14,12 @@ import AdminView from "./components/admin/AdminView.js"
 
 import AdminEntity from "./components/admin/AdminEntity.js"
 
+import AdminSearch from "./components/admin/AdminSearch.js"
+
 // student imports
 import StudentDashboard from "./components/student/StudentDashboard.js"
 
+import StudentView from "./components/student/StudentView.js"
 
 // company imports
 import CompanyDashboard from "./components/company/CompanyDashboard.js"
@@ -51,8 +54,13 @@ export const routes = {
 
     admin_entity: AdminEntity,
 
+    admin_search: AdminSearch,
+
     // student routes
     student_dashboard: StudentDashboard,
+
+    student_view: StudentView,
+
 
     // company routes
     company_dashboard: CompanyDashboard,
