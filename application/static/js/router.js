@@ -21,6 +21,10 @@ import StudentDashboard from "./components/student/StudentDashboard.js"
 
 import StudentView from "./components/student/StudentView.js"
 
+import StudentEntity from "./components/student/StudentEntity.js"
+
+import StudentSearch from "./components/student/StudentSearch.js"
+
 // company imports
 import CompanyDashboard from "./components/company/CompanyDashboard.js"
 
@@ -60,6 +64,10 @@ export const routes = {
     student_dashboard: StudentDashboard,
 
     student_view: StudentView,
+
+    student_entity: StudentEntity,
+
+    student_search: StudentSearch,
 
 
     // company routes

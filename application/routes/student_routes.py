@@ -26,10 +26,12 @@ def dashboard():
 # 2. Profile Management Functions
 '''View profile
 Edit profile'''
-# 2.1 - View profile
+# Profile functions moved to auth section
+'''# 2.1 - View profile
 # Input: student_id from session cookie
 # Output: JSON {student details}
 @student_bp.route('/profile/')
+@student_required
 def view_profile(student_id):
     return jsonify(ss.get_profile())
 
@@ -39,7 +41,7 @@ def view_profile(student_id):
 @student_bp.route('/profile/edit/')
 def edit_profile(student_id, new_data):
     return jsonify(ss.edit_profile())
-
+'''
 # _____________________________________________________________________________________________
 # 3. Organization Management Functions
 
@@ -47,16 +49,18 @@ def edit_profile(student_id, new_data):
 # organizations with drives that the student has applied to or is eligible for
 # Input: student_id from session cookie
 # Output: JSON {}
-@student_bp.route('/organizations/')
+@student_bp.route('/companies')
+@student_required
 def view_organizations():
-    return 
+    return jsonify(ss.get_companies())
 
 # 3.2 - View single organization and eligible drives
 # Input: organization_id
 # Output: JSON {organization details + drives details}
-@student_bp.route('/organizations/view/<organization_id>')
-def view_organization(organization_id):
-    return
+@student_bp.route('/companies/<org_id>')
+@student_required
+def view_organization(org_id):
+    return jsonify(ss.get_company(org_id))
 
 # ____________________________________________________________________________________________
 # 4. Drive Management Functions
@@ -65,16 +69,23 @@ def view_organization(organization_id):
 # drives that the student has applied to or is eligible for
 # Input: student_id from session cookie
 # Output: JSON {drives: []}
-@student_bp.route('/drives/<student_id>')
-def view_drives(student_id):
-    return
+@student_bp.route('/drives')
+@student_required
+def view_drives():
+    return jsonify(ss.get_drives())
 
 # 4.2 - View single drive and applications
 # Input: drive_id
 # Output: JSON {drive details + applications details}
-@student_bp.route('/drives/view/<drive_id>')
+@student_bp.route('/drives/<drive_id>')
+@student_required   
 def view_drive(drive_id):
-    return
+    return jsonify(ss.get_drive(drive_id))
+
+@student_bp.route('/drives/apply/<drive_id>')
+@student_required
+def apply_to_drive(drive_id):
+    return jsonify(ss.apply_to_drive(drive_id))
 
 # ____________________________________________________________________________________________
 # 5. Application Management Functions
@@ -93,38 +104,56 @@ Be able to view all applications and their status in a separate page.
 Be able to see each application and its details in a separate page.
 
 Be able to update the status of each application (accept or reject offer) in the single application page.
-
-Be able to update the application information (eg. resume) until the application deadline has passed.
 '''
 # 5.1 - Create application
 # Input: student_id from session cookie + drive_id + application details
 # Output: JSON {success: boolean, message: STRING} + application added to applications table
-@student_bp.route('/applications/create')
-def create_application():
-    return
+'''@student_bp.route('/applications/apply/<drive_id>')
+@student_required
+def apply_application(application_id):
+    return jsonify()'''
 
 # 5.2 - View applications
 # Input: student_id from session cookie
 # Output: JSON {applications: []}
-@student_bp.route('/applications/<student_id>')
-def view_applications(student_id):
-    return
+@student_bp.route('/applications')
+@student_required
+def view_applications():
+    return jsonify(ss.get_applications())
 
 # 5.3 - View single application
-@student_bp.route('/applications/view/<application_id>')
+@student_bp.route('/applications/<application_id>')
+@student_required
 def view_application(application_id):
-    return
+    return jsonify(ss.get_application(application_id))
 
-# 5.4 - Update application
+
+# 5.4 - Accept Offer
 # Input: application_id + new details (eg. resume)
 # Output: JSON {success: boolean, message: STRING} + application details updated in applications table
-@student_bp.route('/applications/update/<application_id>')
-def update_application(application_id):
-    return
+@student_bp.route('/applications/accept/<application_id>')
+@student_required
+def accept_offer(application_id):
+    return jsonify(ss.accept_application(application_id))
 
-# 5.5 - Update application status (accept or reject offer)
+# 5.5 - Reject Offer
+# Input: application id
+@student_bp.route('/applications/reject/<application_id>')
+@student_required
+def reject_offer(application_id):
+    return jsonify(ss.reject_application(application_id))
+
+
+
+'''# 5.5 - Update application status (accept or reject offer)
 # Input: application_id + new status (accepted or rejected)
 # Output: JSON {success: boolean, message: STRING} + application status updated in applications table
 @student_bp.route('/applications/update-status/<application_id>')
 def update_application_status(application_id):
-    return
+    return'''
+
+# _________________________________________________________________________________________
+@student_bp.route('/search/<query>')
+@student_required
+def search(query):
+    return jsonify(ss.search(query))

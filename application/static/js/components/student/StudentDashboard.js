@@ -15,16 +15,22 @@ export default {
         return {
 
             dashboard: {
+                status: "",
                 stats: {
                     applied: 0,
-                    shortlisted: 0,
-                    interviews: 0,
-                    offers: 0
+                    rejected: 0,
+                    interview: 0,
+                    offer: 0    
                 },
 
                 list: {
                     eligible_drives: {},
                     recent_applications: {}
+                },
+
+                placed: {
+                    drive: {},
+                    company: {}
                 }
 
             }
@@ -39,7 +45,7 @@ export default {
             return {
                 companies: {
                     label: "View",
-                    handler: this.viewDrivesOfCompany,
+                    handler: this.viewCompany,
                     class: "btn-primary"
                 },
                 drives: [
@@ -75,6 +81,8 @@ export default {
     },
 
     methods: {
+        // all student methods
+        // get student_dash
         async studentDash() {
             const response = await fetch("api/student/dashboard")
 
@@ -96,54 +104,348 @@ export default {
             this.navigate("student_view", {entity: "drives"})
         },
 
-        viewDrivesOfCompany(companyId) {
-            this.navigate("student_view", {entity: "drives", company_id: companyId})
-        },
-
         viewApplications() {
             this.navigate("student_view", {entity: 'applications'})
         },
 
         // view single entity functions for admin
         viewCompany(id) {
-
             this.navigate("student_entity", { id: id, entity: 'companies' })
-
         },
 
         viewDrive(id) {
-
             this.navigate("student_entity", { id: id, entity: 'drives' })
-
         },
 
         viewApplication(id) {
-            this.navigate("student_entity", { id: id, antity: 'application'})
+            this.navigate("student_entity", { id: id, entity: 'application'})
         },
 
-        // application
-        applyToDrive(drive_id) {
-            
-  
+        // action_entity function
+        async action_entity(entity, action, id) {
+            const response = await fetch(
+                `/api/student/${entity}/${action}/${id}`
+            )
+            const result = await response.json()
+
+            if (result.success) {
+                alert(`${entity.charAt(0).toUpperCase() + entity.slice(1)} ${action}d successfully!`)
+                this.studentDash()
+            }
+            else {
+                alert(result.message || `Failed to ${action} ${entity}.`)
+            }
         },
 
-        acceptOffer(id) {
+        // application actions
+        async applyToDrive(drive_id) {
+            this.action_entity('drives', 'apply', drive_id)
+        },
+
+        async acceptOffer(application_id) {
+
+            const confirmation = prompt(
+                `WARNING
+
+                Accepting this offer will:
+
+                • Mark you as PLACED
+                • Withdraw all your other applications
+                • Prevent you from applying to any future drives
+                • Permanently lock your placement status
+
+                THIS ACTION CANNOT BE UNDONE.
+
+                Type ACCEPT to continue.`
+            )
+
+            if (confirmation !== "ACCEPT") {
+
+                alert("Offer acceptance cancelled.")
+
+                return
+
+            }
+
+            const response = await fetch(
+                `/api/student/applications/accept/${application_id}`
+            )
+
+            const result = await response.json()
+
+            if (result.success) {
+
+                alert(result.message)
+
+                this.studentDash()
+
+            }
+
+            else {
+
+                alert(result.message)
+
+            }
 
         },
 
-        rejectOffer(id) {
+        async rejectOffer(application_id) {
 
+            const confirmation = prompt(
+                `WARNING
+
+                Rejecting this offer will:
+
+                • Permanently reject this offer
+                • Remove your ability to accept this offer later
+
+                THIS ACTION CANNOT BE UNDONE.
+
+                Type REJECT to continue.`
+            )
+
+            if (confirmation !== "REJECT") {
+
+                alert("Offer rejection cancelled.")
+
+                return
+
+            }
+
+            const response = await fetch(
+                `/api/student/applications/reject/${application_id}`
+            )
+
+            const result = await response.json()
+
+            if (result.success) {
+
+                alert(result.message)
+
+                this.studentDash()
+
+            }
+
+            else {
+
+                alert(result.message)
+
+            }
+
+        },
+
+        // search
+        async search() {
+            if (!this.searchText.trim()) {
+                
+                alert("Please enter a search term")
+
+                return
+
+            }
+            console.log(this.searchText)
+            this.navigate(
+                "student_search",
+                {
+                    search: this.searchText
+                }
+            )
         }
-
-
-
 
     },
 
 
     template: `
+        <!-- IF BLACKLISTED OF DEACTIVATED -->
+        <div
+            v-if="dashboard.status === 'blacklisted' || dashboard.status === 'deactivated'">
+            <div class="container mt-4">
+                <div class="p-4 bg-light border rounded">
 
-        <div>
+                    <h2>
+                        Dear Student
+                    </h2>
+
+                    <p>
+                        Your account is  {{ dashboard.status }}, please contact admin@portal.com for further help.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- IF PLACED -->
+        <div
+            v-if="dashboard.status === 'placed'">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+                <div class="container-fluid">
+                                        <ul class="navbar-nav me-auto">
+
+
+                    </ul>
+
+                    <div class="dropdown">
+
+                        <button
+                            class="btn btn-outline-light rounded-circle"
+                            style="
+                                width:42px;
+                                height:42px;
+                            "
+                            data-bs-toggle="dropdown">
+
+                            S
+
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end">
+
+                            <li>
+
+                                <a
+                                    class="dropdown-item"
+                                    @click="manageProfile('student')">
+
+                                    Manage Profile
+
+                                </a>
+
+                            </li>
+
+                            <li>
+
+                                <a
+                                    class="dropdown-item"
+                                    @click="changePassword">
+
+                                    Change Password
+
+                                </a>
+
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li>
+
+                                <a
+                                    class="dropdown-item text-danger"
+                                    @click="logout">
+
+                                    Logout
+
+                                </a>
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </nav>
+            <div class="container mt-4">
+                <div class="p-4 bg-light border rounded">
+
+                    <h2>
+                        Welcome Student
+                    </h2>
+
+                    <p>
+                        CONGRATULATIONS on your placement! 🥳🎉
+                    </p>
+                </div>
+            </div>
+            <div class="container mt-4">
+
+                <div class="row">
+
+                    <!-- company placed at -->
+
+                    <div class="col-md-6">
+
+                        <div class="card">
+
+                            <div class="card-header">
+
+                                <div
+                                    class="d-flex justify-content-between">
+
+                                    <h5>
+                                        Company Details
+                                    </h5>
+
+                                </div>
+
+                            </div>
+
+                            <div class="card-body">
+
+                                <div
+                                    v-for="(value,key) in dashboard.placed.company"
+                                    :key="key"
+                                    class="mb-2">
+
+                                    <strong>{{ key }}</strong> :
+                                    {{ value }}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Drive Details -->
+
+                    <div class="col-md-6">
+
+                        <div class="card">
+
+                            <div class="card-header">
+
+                                <div
+                                    class="d-flex justify-content-between">
+
+                                    <h5>
+                                        Drive Details
+                                    </h5>
+
+                                </div>
+
+                            </div>
+
+                            <div class="card-body">
+
+                                <div
+                                    v-for="(value,key) in dashboard.placed.drive"
+                                    :key="key"
+                                    class="mb-2">
+
+                                    <strong>{{ key }}</strong> :
+                                    {{ value }}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- IF APPROVED -->
+        <div
+            v-if="dashboard.status === 'approved'">
 
             <!-- NAVBAR -->
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -323,14 +625,6 @@ export default {
                                     {{ dashboard.stats.applied }}
                                 </h2>
 
-                                <button
-                                    class="btn btn-primary"
-                                    @click="">
-
-                                    View All
-
-                                </button>
-
                             </div>
 
                         </div>
@@ -345,19 +639,11 @@ export default {
 
                             <div class="card-body">
 
-                                <h5>Shortlisted</h5>
+                                <h5>Rejected</h5>
 
                                 <h2>
-                                    {{ dashboard.stats.shortlisted }}
+                                    {{ dashboard.stats.rejected }}
                                 </h2>
-
-                                <button
-                                    class="btn btn-primary"
-                                    @click="">
-
-                                    View All
-
-                                </button>
 
                             </div>
 
@@ -376,16 +662,8 @@ export default {
                                 <h5>Interviews</h5>
 
                                 <h2>
-                                    {{ dashboard.stats.interviews }}
+                                    {{ dashboard.stats.interview }}
                                 </h2>
-
-                                <button
-                                    class="btn btn-primary"
-                                    @click="">
-
-                                    View All
-
-                                </button>
 
                             </div>
 
@@ -404,16 +682,8 @@ export default {
                                 <h5>Offers</h5>
 
                                 <h2>
-                                    {{ dashboard.stats.offers }}
+                                    {{ dashboard.stats.offer }}
                                 </h2>
-                                
-                                <button
-                                    class="btn btn-primary"
-                                    @click="">
-
-                                    View All
-
-                                </button>
 
                             </div>
 
@@ -576,7 +846,7 @@ export default {
 
                                             <button
                                                 class="btn btn-success btn-sm"
-                                                :v-if="offer"
+                                                v-if="application.status==='offer'"
                                                 @click="acceptOffer(application.id)">
 
                                                 Accept
@@ -585,8 +855,8 @@ export default {
 
                                             <button
                                                 class="btn btn-danger btn-sm"
-                                                :v-if="offer"
-                                                @click="rejectOffer(drive.id)">
+                                                v-if="application.status==='offer'"
+                                                @click="rejectOffer(application.id)">
 
                                                 Reject
 

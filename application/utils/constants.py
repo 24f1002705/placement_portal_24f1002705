@@ -6,9 +6,9 @@ student_statuses = ['registered', 'approved', 'blacklisted', 'deactivated', 'pla
 
 company_statuses = ['registered', 'approved', 'rejected', 'blacklisted']
 
-drive_statuses = ['registered', 'approved', 'rejected', 'blacklisted']
+drive_statuses = ['registered', 'approved', 'rejected', 'blacklisted', 'closed']
 
-application_statuses = ['applied', 'rejected', 'shortlisted', 'interviewed', 'accepted']
+application_statuses = ['applied', 'rejected', 'interviewed', 'offer', 'accepted', 'withdrawn']
 
 corresponding_names = {
     'student': 'name',
