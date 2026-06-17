@@ -3,12 +3,14 @@
         "c:\\Users\\siddh\\OneDrive\\Documents\\Obsidian notes\\IITM Notes\\placement_portal_24f1002705": {
             "order": [
                 "venv",
+                ".vscode",
+                "__pycache__",
                 "app.py",
+                "config.py",
                 "instance",
                 "application",
                 "README.md",
-                "requirements.txt",
-                ".vscode"
+                "requirements.txt"
             ],
             "type": "manual"
         },
@@ -18,11 +20,13 @@
                 "models",
                 "routes",
                 "services",
+                "utils",
+                "executors",
                 "tasks",
                 "cache",
                 "static",
                 "templates",
-                "utils"
+                "__pycache__"
             ],
             "type": "manual"
         },
@@ -39,13 +43,12 @@
         },
         "c:\\Users\\siddh\\OneDrive\\Documents\\Obsidian notes\\IITM Notes\\placement_portal_24f1002705\\application\\routes": {
             "order": [
+                "__pycache__",
                 "__init__.py",
                 "auth_routes.py",
                 "admin_routes.py",
                 "company_routes.py",
-                "student_routes.py",
-                "index.html",
-                "__pycache__"
+                "student_routes.py"
             ],
             "type": "manual"
         },
@@ -57,19 +60,25 @@
         },
         "c:\\Users\\siddh\\OneDrive\\Documents\\Obsidian notes\\IITM Notes\\placement_portal_24f1002705\\application\\services": {
             "order": [
+                "__pycache__",
                 "auth_services.py",
                 "admin_services.py",
-                "db_services.py"
+                "db_services.py",
+                "company_services.py",
+                "student_services.py"
             ],
             "type": "manual"
         },
         "utils": {
             "order": [
+                "__pycache__",
                 "auth_utils.py",
                 "decorators.py",
                 "helpers.py",
                 "constants.py",
-                "db_executors.py"
+                "company_utils.py",
+                "student_utils.py",
+                "testers.py"
             ],
             "type": "manual"
         },

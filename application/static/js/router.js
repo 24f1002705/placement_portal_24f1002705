@@ -5,7 +5,7 @@ import RegisterPage from "./components/auth/RegisterPage.js"
 
 import ChangePasswordPage from "./components/auth/ChangePassword.js"
 
-import ProfilePage from "./components/auth/ProfilePage.js"
+import ProfilePage from "./components/auth/ManageProfile.js"
 
 // admin imports
 import AdminDashboard from "./components/admin/AdminDashboard.js"
@@ -28,7 +28,11 @@ import StudentSearch from "./components/student/StudentSearch.js"
 // company imports
 import CompanyDashboard from "./components/company/CompanyDashboard.js"
 
+import CompanyView from "./components/company/CompanyView.js"
 
+import CompanyEntity from "./components/company/CompanyEntity.js"
+
+import CompanyCreate from "./components/company/CompanyCreate.js"
 
 
 // --------------------------------------------------
@@ -72,5 +76,11 @@ export const routes = {
 
     // company routes
     company_dashboard: CompanyDashboard,
+
+    company_view: CompanyView,
+
+    company_entity: CompanyEntity,
+
+    company_create: CompanyCreate
 
 }

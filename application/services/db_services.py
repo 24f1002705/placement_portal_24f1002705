@@ -21,6 +21,10 @@ def get_element_query(query, entity, parameter, value, parameter2, value2):
     out = dbe.SQL_fetch(f"SELECT {query} FROM {entity} WHERE {parameter}='{value}' and {parameter2}='{value2}'")
     return out[0][0]
 
+def get_elements_query(entity, parameter, value, parameter2, value2):
+    out = dbe.SQL_fetch(f"SELECT * FROM {entity} WHERE {parameter}='{value}' and {parameter2}='{value2}'")
+    return out
+
 def modify_element(entity, parameter, value, new_values):
     # new_values is a dictionary of column names and their new values
     set_string = ", ".join([f"{col}='{val}'" for col, val in new_values.items()])

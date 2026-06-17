@@ -14,7 +14,6 @@ def verify_credentials(credentials):
 
     user_from_db = dbs.get_element('user', 'email', credentials['email'])
     user_from_db = dict(user_from_db[0]) if user_from_db else None
-    print(user_from_db)
 
     if user_from_db and (user_from_db['password_hash'] == credentials['password']):
         user['exists'] = 1

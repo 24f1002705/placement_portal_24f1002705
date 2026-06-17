@@ -31,7 +31,6 @@ def login():
         result = a_u.login_session(user)
     else:
         result['message'] = "Invalid email or password"
-    print(result)
     return jsonify(result)
 
 # 1.3 - for verification in case if user is already logged in and tries to access the login page again.
