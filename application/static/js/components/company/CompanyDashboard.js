@@ -7,7 +7,9 @@ export default {
 
         "viewProfile",
 
-        "changePassword"
+        "changePassword",
+
+        "routeData"
     ],
 
     data() {
@@ -18,7 +20,7 @@ export default {
 
                         length: {
                             current: 0,
-                            past: 0
+                            awaiting: 0
                         },
 
                         current: [],
@@ -73,21 +75,57 @@ export default {
 
         },
 
-        viewDrives() {
+        createDrive() {
 
             this.navigate(
-                "company_view",
-                {
-                    entity: "drives"
+                "company_drive", {
+                    mode: "create"
                 }
             )
 
         },
+        
+        async editDrive(id) {
 
-        createDrive() {
+            const warning = `
+        WARNING
+
+        Editing a drive will automatically place it back into the approval queue.
+
+        The drive may become unavailable to students until it is re-approved by an administrator.
+
+        Students who have already applied will NOT automatically be re-evaluated for eligibility.
+
+        As a result:
+
+        • Previously eligible students may become ineligible.
+        • Previously ineligible students may become eligible.
+        • Existing applications may no longer reflect the updated eligibility criteria.
+
+        This action is irreversible.
+
+        Type EDIT to acknowledge and continue.
+        `
+
+            const confirmation =
+                prompt(warning)
+
+            if (confirmation !== "EDIT") {
+
+                alert(
+                    "Drive modification cancelled."
+                )
+
+                return
+
+            }
 
             this.navigate(
-                "company_create_drive"
+                "company_drive",
+                {
+                    mode: "edit",
+                    id: id
+                }
             )
 
         },
@@ -112,6 +150,59 @@ export default {
                     id: id
                 }
             )
+        },
+
+        
+        // action entity
+        async action_entity(entity, action, id) {
+            const response = await fetch(
+                `/api/company/${entity}/${action}/${id}`
+            )
+            const result = await response.json()
+
+            if (result.success) {
+                alert(`${entity.charAt(0).toUpperCase() + entity.slice(1)} ${action}d successfully!`)
+                this.loadDashboard()
+            }
+            else {
+                alert(result.message || `Failed to ${action} ${entity}.`)
+            }
+        },
+
+        async shortlistApplication(id) {
+            
+            await this.action_entity(
+                'applications', 
+                'interview', 
+                id
+            )
+        },
+
+        async rejectApplication(applicationId) {
+
+            await this.actionEntity(
+                "applications",
+                "reject",
+                applicationId
+            )
+
+        },
+
+        async offerApplication(applicationId) {
+
+            await this.actionEntity(
+                "applications",
+                "offer",
+                applicationId
+            )
+
+        },
+
+        scheduleInterview(applicationId,email) {
+
+            window.location.href =
+                `mailto:${email}`
+
         }
     },
 
@@ -133,18 +224,6 @@ export default {
                                 @click="viewDashboard">
 
                                 Dashboard
-
-                            </a>
-
-                        </li>
-
-                        <li class="nav-item">
-
-                            <a
-                                class="nav-link"
-                                @click="viewDrives">
-
-                                Drives
 
                             </a>
 
@@ -277,13 +356,13 @@ export default {
 
                                 <h5>
 
-                                    Closed Drives
+                                    Awaiting Approval Drives
 
                                 </h5>
 
                                 <h2>
 
-                                    {{ dashboard.length.past }}
+                                    {{ dashboard.length.awaiting }}
 
                                 </h2>
 
@@ -357,22 +436,30 @@ export default {
                                             </small>
 
                                         </div>
+                                        <div class="d-flex gap-2">
 
-                                        <button
-                                            class="btn btn-primary"
-                                            @click="viewDrive(drive.id)">
+                                            <button
+                                                class="btn btn-primary btn-sm"
+                                                @click="viewDrive(drive.id)">
 
-                                            View
+                                                View
 
-                                        </button>
+                                            </button>
+                                            <button
+                                                class="btn btn-success btn-sm"
+                                                @click="editDrive(drive.id)">
+                                                Edit
+                                            </button>
 
-                                        <button
-                                            class="btn btn-danger"
-                                            @click="closeDrive(drive.id)">
-                                            
-                                            Close
+                                            <button
+                                                class="btn btn-danger btn-sm"
+                                                @click="closeDrive(drive.id)">
+                                                
+                                                Close
 
-                                        </button>
+                                            </button>
+
+                                        </div>
 
                                     </div>
 
@@ -431,6 +518,7 @@ export default {
                                             View
 
                                         </button>
+
 
                                     </div>
 

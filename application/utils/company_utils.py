@@ -1,14 +1,10 @@
+from flask import session
+from application.utils.auth_utils import get_current_user
+
 def get_drive_data(request):
-    return
+    data = request.json
+    user = get_current_user()
+    data['company_id'] = user['role_id']
+    data['status'] = 'registered'
+    return data
 
-def validate_drive_data(drive_data):
-    return
-
-def format_drive_data(drive_data):
-    return
-
-def get_application_data(request):
-    return
-
-def validate_application_action(application_id, action):
-    return

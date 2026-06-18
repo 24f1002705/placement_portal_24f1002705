@@ -28,11 +28,9 @@ import StudentSearch from "./components/student/StudentSearch.js"
 // company imports
 import CompanyDashboard from "./components/company/CompanyDashboard.js"
 
-import CompanyView from "./components/company/CompanyView.js"
-
 import CompanyEntity from "./components/company/CompanyEntity.js"
 
-import CompanyCreate from "./components/company/CompanyCreate.js"
+import CompanyDrive from "./components/company/CompanyDrive.js"
 
 
 // --------------------------------------------------
@@ -77,10 +75,8 @@ export const routes = {
     // company routes
     company_dashboard: CompanyDashboard,
 
-    company_view: CompanyView,
-
     company_entity: CompanyEntity,
 
-    company_create: CompanyCreate
+    company_drive: CompanyDrive
 
 }

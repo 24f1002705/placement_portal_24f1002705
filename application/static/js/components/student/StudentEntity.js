@@ -90,6 +90,7 @@ export default {
                 this.entity = this.routeData.entity
                 this.id = this.routeData.id
 
+
                 let endpoint = `/api/student/${this.entity}/${this.id}`
 
                 const response = await fetch(endpoint)
@@ -119,7 +120,9 @@ export default {
 
                 else if (this.entity === "applications") {
 
-                    this.application = result.data[0]
+                    console.log(result.data)
+
+                    this.application = result.data
 
                 }
 
@@ -128,6 +131,7 @@ export default {
             catch(err) {
 
                 this.error = err.message
+                alert(this.error)
 
             }
 
@@ -170,7 +174,7 @@ export default {
         },
 
         viewApplication(id) {
-            this.navigate("student_entity", { id: id, entity: 'application'})
+            this.navigate("student_entity", { id: id, entity: 'applications'})
         },
 
         // action_entity function
@@ -633,7 +637,7 @@ export default {
                         </div>
 
                         <div
-                            v-if="application.status==='offer'"
+                            v-if="application.application_status==='offer'"
                             class="mt-3">
 
                             <button

@@ -130,8 +130,12 @@ def get_applications():
     return(orchestrate_JSON(rows))
 
 def get_application(app_id):
-    data = rows_to_dict(dbs.get_element('application', 'id', app_id))
-    return(orchestrate_JSON(data))
+    data = rows_to_dict(dbs.get_element('application', 'id', app_id))[0]
+    drive_data = rows_to_dict(dbs.get_element('drive', 'id', data['drive_id']))[0]
+    drive_data['application date'] = data['application_date']
+    drive_data['application_status'] = data['status']
+    print("checkpoint 107:", drive_data)
+    return(orchestrate_JSON(drive_data))
 
 def accept_application(app_id):
     app_id = int(app_id)

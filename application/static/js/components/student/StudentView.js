@@ -130,7 +130,7 @@ export default {
         },
 
         viewApplication(id) {
-            this.navigate("student_entity", { id: id, entity: 'application'})
+            this.navigate("student_entity", { id: id, entity: 'applications'})
         },
 
         // action_entity function

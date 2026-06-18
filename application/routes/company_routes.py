@@ -38,10 +38,11 @@ def view_drives():
 # returns the details of a drive posted by the company
 # Input: drive_id
 # Output: drive details in JSON {drive: {details}, applications: {}}
-@company_bp.route('/drives/view/<drive_id>')
+@company_bp.route('/drives/<drive_id>')
 @company_required
 def view_drive(drive_id):
-    return jsonify(cs.view_drive(drive_id))
+    print("checkpoint 100: ",  cs.get_drive(drive_id))
+    return jsonify(cs.get_drive(drive_id))
 
 # 2.3 - Create drive
 # Make sure drive is valid and add to the db
@@ -53,11 +54,11 @@ def create_drive():
 
 # 2.4 - Edit drive
 # Input: drive id and edited details
-@company_bp.route('/drives/edit/<drive_id>')
+@company_bp.route('/drives/edit/<drive_id>', methods=['POST'])
 @company_required
-def edit_drive():
+def edit_drive(drive_id):
     edit_drive_data = cu.get_drive_data(request)
-    return jsonify(cs.modify_drive(edit_drive_data))
+    return jsonify(cs.modify_drive(edit_drive_data, drive_id))
 
 # 2.5 - End drive
 # Input: drive_id
@@ -77,7 +78,7 @@ def view_applications(drive_id):
     return
 """
 # 3.2 - View specific application
-@company_bp.route('/applications/view/<application_id>')
+@company_bp.route('/applications/<application_id>')
 @company_required
 def view_application(application_id):
     return jsonify(cs.get_application(application_id))
