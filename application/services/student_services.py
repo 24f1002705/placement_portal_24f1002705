@@ -55,8 +55,16 @@ def get_dashboard():
             out1.append(row)
     userdata = dbs.get_element('student', 'id', user['role_id'])
     userdata = rows_to_dict(userdata)
-    out2 = su.eligibility_check_drives(out1, userdata)
-    list['eligible_drives'] = out2
+    drive_eligibility = su.eligibility_check_drives(out1, userdata)
+    print("drive_eligibility: ", drive_eligibility)
+    eligible_drives = []
+    for drive in drive_eligibility:
+        if drive['eligibility']:
+            eligible_drives.append(drive)
+
+    list['eligible_drives'] = eligible_drives
+
+
 
     applications = rows_to_dict(dbs.get_element('application', 'student_id', user['role_id']))
     applications = su.sort_applications(applications)
@@ -89,7 +97,12 @@ def get_companies():
 
 def get_company(company_id):
     company = rows_to_dict(dbs.get_element('company', 'id', company_id))
-    drives = rows_to_dict(dbs.get_element('drive', 'company_id', company[0]['id']))
+    user = get_current_user()
+    userdata = rows_to_dict(dbs.get_element('student', 'id', user['role_id']))
+    drives = su.eligibility_check_drives(
+        rows_to_dict(dbs.get_element('drive', 'company_id', company[0]['id'])),
+        userdata
+    )
     data = {'company': company, 'drives': drives}
     return(orchestrate_JSON(data))
 
@@ -105,19 +118,31 @@ def get_drives():
             out1.append(row)
     userdata = dbs.get_element('student', 'id', user['role_id'])
     userdata = rows_to_dict(userdata)
-    out2 = su.eligibility_check_drives(out1, userdata)
+    drive_eligibility = su.eligibility_check_drives(out1, userdata)
 
-    return(orchestrate_JSON(out2))
+    return(orchestrate_JSON(drive_eligibility))
 
 def get_drive(drive_id):
-    data = rows_to_dict(dbs.get_element('drive', 'id', drive_id))
+    rows = rows_to_dict(dbs.get_element('drive', 'id', drive_id))
+    user = get_current_user()
+    userdata = rows_to_dict(dbs.get_element('student', 'id', user['role_id']))
+    data = su.eligibility_check_drives(rows, userdata)
     return(orchestrate_JSON(data))
 
 def apply_to_drive(drive_id):
     # need to create a new application entry with status applied
     user = get_current_user()
-    data = dbs.add_row('application', {'student_id': user['role_id'], 'drive_id': drive_id, 'status': 'applied', 'application_date': 'CURRENT_DATE'})
-    return(orchestrate_JSON(data))
+    userdata = rows_to_dict(dbs.get_element('student', 'id', user['role_id']))
+    check = su.eligibility_check_drives(
+        rows_to_dict(dbs.get_element('drive', 'id', drive_id)),
+        userdata
+    )[0]['eligibility']
+    if check:
+        data = dbs.add_row('application', {'student_id': user['role_id'], 'drive_id': drive_id, 'status': 'applied', 'application_date': 'CURRENT_DATE'})
+        return(orchestrate_JSON(data))
+    else:
+        out = return_empty_JSON()
+        out['message'] = "Unauthorized access"
 
 def get_applications():
     user = get_current_user()

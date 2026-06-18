@@ -39,11 +39,11 @@ export default {
                         handler: this.viewDrive,
                         class: "btn-primary"
                     },
-                    {
-                        label: "Apply",
-                        handler: this.applyToDrive,
-                        class: "btn-success"
-                    }
+                    //{
+                    //    label: "Apply",
+                    //    handler: this.applyToDrive,
+                    //    class: "btn-success"
+                    //}
                 ],
                 applications: [
                     {
@@ -511,6 +511,13 @@ export default {
                                             Reject
                                         </button>
 
+                                        <button
+                                            v-if="entity==='drives' && row.eligibility"
+                                            @click="applyToDrive(row.id)"
+                                            class="btn btn-sm me-2 btn-success">
+                                            Apply
+                                        </button>
+
                                     </td>
 
                                 </tr>
@@ -526,6 +533,8 @@ export default {
             </div>
 
         </div>
+
+    </div>
     `
 }
 // if company, only show active companies, 

@@ -526,6 +526,13 @@ export default {
                                             View
 
                                         </button>
+                                        
+                                        <button
+                                            v-if="drive.eligibility"
+                                            @click="applyToDrive(drive.id)"
+                                            class="btn btn-sm me-2 btn-success">
+                                            Apply
+                                        </button>
 
                                     </td>
 
@@ -601,6 +608,7 @@ export default {
                         </div>
 
                         <button
+                            v-if="drive.eligibility"
                             class="btn btn-success mt-3"
                             @click="applyToDrive(drive.id)">
 
