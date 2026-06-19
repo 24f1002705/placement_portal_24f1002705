@@ -17,6 +17,7 @@
         "c:\\Users\\siddh\\OneDrive\\Documents\\Obsidian notes\\IITM Notes\\placement_portal_24f1002705\\application": {
             "order": [
                 "__init__.py",
+                "celery_worker.py",
                 "models",
                 "routes",
                 "services",
@@ -26,7 +27,8 @@
                 "cache",
                 "static",
                 "templates",
-                "__pycache__"
+                "__pycache__",
+                "extensions.py"
             ],
             "type": "manual"
         },
@@ -78,7 +80,9 @@
                 "constants.py",
                 "company_utils.py",
                 "student_utils.py",
-                "testers.py"
+                "testers.py",
+                "mail_utils.py",
+                "cache_utils.py"
             ],
             "type": "manual"
         },
@@ -91,6 +95,15 @@
         "c:\\Users\\siddh\\OneDrive\\Documents\\Obsidian notes\\IITM Notes\\placement_portal_24f1002705\\config": {
             "order": [
                 "config.py"
+            ],
+            "type": "manual"
+        },
+        "c:\\Users\\siddh\\OneDrive\\Documents\\Obsidian notes\\IITM Notes\\placement_portal_24f1002705\\application\\tasks": {
+            "order": [
+                "export_tasks.py",
+                "reminder_tasks.py",
+                "report_tasks.py",
+                "mail_tasks.py"
             ],
             "type": "manual"
         }

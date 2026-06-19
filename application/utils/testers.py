@@ -1,3 +1,10 @@
-from application.services import admin_services as a_s
+import redis
 
-print(a_s.get_company_data(1))
+r = redis.Redis(
+    host='localhost',
+    port=6379,
+    decode_responses=True
+)
+
+r.set("test", "hello")
+print(r.get("test"))

@@ -89,6 +89,8 @@ def get_dashboard():
     
     data = {'status': userdata[0]['status'], 'stats': stats, 'list': list, 'placed': placed}
 
+    print("getting applications: ", get_applications())
+
     return(orchestrate_JSON(data))
 
 def get_companies():
@@ -208,3 +210,10 @@ def search(query):
     out = rows_to_dict(dbs.get_search('company', query))
     print(out)
     return(orchestrate_JSON(out))
+
+def get_eligible_students(drive_id):
+    drive = rows_to_dict(dbs.get_element('drive', 'id', drive_id))[0]
+    students = rows_to_dict(dbs.get_element('student', 'status', 'approved'))
+    #return(su.eligibility_check_students(drive, students))
+    print("eligible students triggered", students)
+    return(students)

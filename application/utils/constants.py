@@ -60,3 +60,6 @@ yearMap = {
                 "PhD": [1,2,3,4,5,6]
 
 }
+
+email_app_password = "klvs snml cpcm vcgb"
+email_id = "linconpark727@gmail.com"

@@ -262,6 +262,20 @@ export default {
                     search: this.searchText
                 }
             )
+        },
+
+        async exportData() {
+            const response = await fetch(
+                `/api/student/export`
+            )
+
+            const result = await response.json()
+
+            if (result.success) {
+                alert("Your Application history is being compiled and will be sent to your email-ID")
+            }
+
+            this.studentView()
         }
 
     },
@@ -416,9 +430,22 @@ export default {
                     class="card mb-4">
 
                     <div class="card-header">
+                        <div class="d-flex justify-content-between">
 
-                        {{ entity }}
+                            <h5>
+                                {{ entity }}
+                            </h5>
 
+                            <button
+                                v-if="entity==='applications'"
+                                class="btn btn-sm btn-primary"
+                                @click="exportData">
+
+                                Export
+
+                            </button>
+
+                        </div>
                     </div>
 
                     <div class="card-body">

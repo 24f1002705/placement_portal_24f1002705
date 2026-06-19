@@ -2,6 +2,8 @@
 from flask import Blueprint, jsonify
 from application.utils.decorators import student_required
 from application.services import student_services as ss
+from application.tasks.export_tasks import export_student_applications
+from application.utils.auth_utils import get_current_user
 
 # Initialization of blueprint object
 student_bp = Blueprint('student', __name__)
@@ -157,3 +159,22 @@ def update_application_status(application_id):
 @student_required
 def search(query):
     return jsonify(ss.search(query))
+
+
+# __________________________________________________________________________
+@student_bp.route('/export')
+@student_required
+def export():
+    user = get_current_user()
+
+    task = (
+        export_student_applications.delay(
+            user['role_id']
+        )
+    )
+
+    return jsonify({
+        "success": 1,
+        "message": "export started",
+        'task_id': task.id
+    })

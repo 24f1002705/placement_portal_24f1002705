@@ -41,3 +41,10 @@ def eligibility_check(drive, userdata):
         return False
 
     return True
+
+def eligibility_check_students(drive, students):
+    out = []
+    for student in students:
+        if eligibility_check(drive, student):
+            out.append(student)
+    return out
