@@ -5,6 +5,7 @@ from application.services import student_services as ss
 from application.tasks.export_tasks import export_student_applications
 from application.utils.auth_utils import get_current_user
 
+
 # Initialization of blueprint object
 student_bp = Blueprint('student', __name__)
 

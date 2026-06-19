@@ -24,7 +24,7 @@ def get_cache(key):
 def set_cache(
     key,
     value,
-    expiry=300
+    expiry=5
 ):
 
     cache.set(

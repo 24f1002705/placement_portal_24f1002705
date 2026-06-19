@@ -2,6 +2,8 @@ from application.utils.auth_utils import get_current_user
 import application.services.db_services as dbs
 from application.utils.helpers import rows_to_dict, orchestrate_JSON, return_empty_JSON
 from application.utils.constants import application_statuses
+from application.utils.cache_utils import get_cache, set_cache, delete_cache
+from application.utils.mail_utils import send_email
 
 # In: company details from cookie
 # out: {success, message, data: {application: ,current: , past: }}
@@ -9,6 +11,21 @@ def dashboard():
     # get company id from get current user
     user = get_current_user()
     company_id = user['role_id']
+    out = return_empty_JSON()
+
+    if user['user_type'] != 'company':
+        out['message'] = "Unauthorized"
+        return out
+    
+    cache_key = f"company_dashboard_{user['role_id']}"
+
+    cached = get_cache(cache_key)
+
+    if cached:
+        print("CACHE HIT")
+        return(orchestrate_JSON(cached))
+    
+    print("CACHE MISS")
 
     data = {}
     lengths = {}
@@ -29,7 +46,11 @@ def dashboard():
 
     data['length'] = lengths
 
-    print(get_drive(1))
+    set_cache(
+        cache_key,
+        data,
+        expiry=300
+    )
 
     return(orchestrate_JSON(data))
 
@@ -66,11 +87,15 @@ def get_drive(drive_id):
     return orchestrate_JSON(data)
 
 def create_drive(drive_data):
+    user = get_current_user()
+    delete_cache(f"company_dashboard_{user['role_id']}")
     drive_data['company_name'] = rows_to_dict(dbs.get_element('company', 'id', drive_data['company_id']))[0]['company_name']
     last_id = dbs.add_row('drive', drive_data)
     return orchestrate_JSON(last_id)
 
 def modify_drive(edit_drive_data, drive_id):
+    user = get_current_user()
+    delete_cache(f"company_dashboard_{user['role_id']}")
     out = return_empty_JSON()
     out['success'] = dbs.modify_element('drive', 'id', drive_id, edit_drive_data)
 
@@ -80,6 +105,8 @@ def modify_drive(edit_drive_data, drive_id):
     return out
 
 def close_drive(drive_id):
+    user = get_current_user()
+    delete_cache(f"company_dashboard_{user['role_id']}")
     return action_entity('drive', 'id', drive_id, {'status': 'closed'})
 
 # ==========================================================
@@ -94,6 +121,37 @@ def get_application(application_id):
     return orchestrate_JSON(application)
 
 def accept_application(application_id):
+    application = rows_to_dict(dbs.get_element("application","id",application_id))[0]
+    drive = rows_to_dict(dbs.get_element('drive', 'id', application["drive_id"]))[0]
+    student = rows_to_dict(dbs.get_element('student', 'id', application['student_id']))[0]
+
+    send_email(
+
+    student["email"],
+
+    "Placement Application Accepted",
+
+        f"""
+    Congratulations!
+
+    Your application for:
+
+    {drive['drive_name']}
+
+    at
+
+    {drive['company_name']}
+
+    has been accepted.
+
+    Please log in to the Placement Portal dashboard
+    for further instructions.
+
+    Best Regards,
+    Placement Portal
+    """
+    )
+
     return action_entity('application', 'id', application_id, {'status': 'offer'})
 
 def reject_application(application_id):

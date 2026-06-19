@@ -4,6 +4,7 @@ from application.utils.helpers import return_empty_JSON, orchestrate_JSON, db_to
 from application.utils.constants import company_statuses, student_statuses, drive_statuses, entities, application_statuses, search_entities
 from application.utils.auth_utils import get_current_user
 import application.utils.student_utils as su
+from application.utils.cache_utils import get_cache, set_cache, delete_cache
 # STUDENT SERVICES
 # ___________________________________________________________________________________________________________________
 # 1. Dashboard
@@ -30,6 +31,16 @@ def get_dashboard():
     if user['user_type'] != 'student':
         out['message'] = "Unauthorized"
         return out
+    
+    cache_key = f"student_dashboard_{user['role_id']}"
+
+    cached = get_cache(cache_key)
+
+    if cached:
+        print("CACHE HIT")
+        return(orchestrate_JSON(cached))
+    
+    print("CACHE MISS")
     
     userdata = dbs.get_element('student', 'id', user['role_id'])
     userdata = rows_to_dict(userdata)
@@ -89,7 +100,11 @@ def get_dashboard():
     
     data = {'status': userdata[0]['status'], 'stats': stats, 'list': list, 'placed': placed}
 
-    print("getting applications: ", get_applications())
+    set_cache(
+        cache_key,
+        data,
+        expiry=300
+    )
 
     return(orchestrate_JSON(data))
 
@@ -141,6 +156,7 @@ def apply_to_drive(drive_id):
     )[0]['eligibility']
     if check:
         data = dbs.add_row('application', {'student_id': user['role_id'], 'drive_id': drive_id, 'status': 'applied', 'application_date': 'CURRENT_DATE'})
+        delete_cache(f"student_dashboard_{user['role_id']}")
         return(orchestrate_JSON(data))
     else:
         out = return_empty_JSON()
@@ -199,11 +215,14 @@ def accept_application(app_id):
     out = return_empty_JSON()
     out['message'] = 'Succesfully accepted'
     out['success'] = 1
+    delete_cache(f"student_dashboard_{user['role_id']}")
     return out
 
 def reject_application(app_id):
     out = return_empty_JSON()
+    user = get_current_user()
     out['success'] = dbs.modify_element('application', 'id', app_id, {'status': 'rejected'})
+    delete_cache(f"student_dashboard_{user['role_id']}")
     return out
 
 def search(query):
