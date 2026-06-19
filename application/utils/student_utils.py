@@ -2,8 +2,6 @@ def eligibility_check_drives(drives, userdata):
     for drive in drives:
         drive['eligibility'] = eligibility_check(drive, userdata)
 
-    out = []
-
     return drives
 
 def sort_applications(applications):
