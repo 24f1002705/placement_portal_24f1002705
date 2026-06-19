@@ -102,8 +102,7 @@ def get_dashboard():
 
     set_cache(
         cache_key,
-        data,
-        expiry=300
+        data
     )
 
     return(orchestrate_JSON(data))
@@ -233,6 +232,20 @@ def search(query):
 def get_eligible_students(drive_id):
     drive = rows_to_dict(dbs.get_element('drive', 'id', drive_id))[0]
     students = rows_to_dict(dbs.get_element('student', 'status', 'approved'))
-    #return(su.eligibility_check_students(drive, students))
-    print("eligible students triggered", students)
-    return(students)
+    return(su.eligibility_check_students(drive, students))
+    '''print("eligible students triggered", students)
+    return(students)'''
+
+def get_profile():
+    student = rows_to_dict(dbs.get_element('student', 'id', get_current_user()['role_id']))[0]
+    print(student)
+    return(orchestrate_JSON(student))
+
+def update_profile(request):
+    data = get_profile_data(request)
+    out = dbs.modify_element('student', 'id', data['id'], data)
+    return(orchestrate_JSON(out))
+
+def get_profile_data(request):
+    data = request.json
+    return data

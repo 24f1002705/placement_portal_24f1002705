@@ -5,7 +5,7 @@ export default {
 
         "logout",
 
-        "viewProfile",
+        "manageProfile",
 
         "changePassword"
     ],
@@ -250,6 +250,19 @@ export default {
                     search: this.searchText
                 }
             )
+        },
+        async exportData() {
+            const response = await fetch(
+                `/api/student/export`
+            )
+
+            const result = await response.json()
+
+            if (result.success) {
+                alert("Your Application history is being compiled and will be sent to your email-ID")
+            }
+
+            this.studentView()
         }
 
     },
@@ -358,6 +371,13 @@ export default {
                     <p>
                         CONGRATULATIONS on your placement! 🥳🎉
                     </p>
+                    <button
+                        class="btn btn-sm btn-primary"
+                        @click="exportData">
+
+                        Export Application History
+
+                    </button>
                 </div>
             </div>
             <div class="container mt-4">

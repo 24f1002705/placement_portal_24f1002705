@@ -391,6 +391,54 @@ export default {
 
                 </ul>
 
+                <div class="dropdown">
+
+                    <button
+                        class="btn btn-outline-light rounded-circle"
+                        style="
+                            width:42px;
+                            height:42px;
+                        "
+                        data-bs-toggle="dropdown">
+
+                        A
+
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                    
+                        <li>
+
+                            <a
+                                class="dropdown-item"
+                                @click="changePassword">
+
+                                Change Password
+
+                            </a>
+
+                        </li>
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+
+                            <a
+                                class="dropdown-item text-danger"
+                                @click="logout">
+
+                                Logout
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
             </div>
 
         </nav>

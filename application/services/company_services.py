@@ -48,8 +48,7 @@ def dashboard():
 
     set_cache(
         cache_key,
-        data,
-        expiry=300
+        data
     )
 
     return(orchestrate_JSON(data))
@@ -125,6 +124,8 @@ def accept_application(application_id):
     drive = rows_to_dict(dbs.get_element('drive', 'id', application["drive_id"]))[0]
     student = rows_to_dict(dbs.get_element('student', 'id', application['student_id']))[0]
 
+    clear_user_cache(application['student_id'])
+
     send_email(
 
     student["email"],
@@ -155,11 +156,25 @@ def accept_application(application_id):
     return action_entity('application', 'id', application_id, {'status': 'offer'})
 
 def reject_application(application_id):
+    application = rows_to_dict(dbs.get_element("application","id",application_id))[0]
+    clear_user_cache(application['student_id'])
     return action_entity('application', 'id', application_id, {'status': 'rejected'})
 
 def shortlist_application(application_id):
+    application = rows_to_dict(dbs.get_element("application","id",application_id))[0]
+    clear_user_cache(application['student_id'])
     return action_entity('application', 'id', application_id, {'status': 'interviewed'})
+# _______________________________
+# profile management
+def get_profile():
+    student = rows_to_dict(dbs.get_element('company', 'id', get_current_user()['role_id']))[0]
+    print(student)
+    return(orchestrate_JSON(student))
 
+def update_profile(request):
+    data = get_profile_data(request)
+    out = dbs.modify_element('company', 'id', data['id'], data)
+    return(orchestrate_JSON(out))
 
 # =======================
 # auxilary functions
@@ -175,7 +190,6 @@ def verify_drive(drive_id):
     
     return False
 
-
 def action_entity(entity, parameter, value, new_values):
     out = return_empty_JSON()
 
@@ -186,3 +200,11 @@ def action_entity(entity, parameter, value, new_values):
 
     print(out)
     return out
+
+def clear_user_cache(student_id):
+    delete_cache(f"student_dashboard_{student_id}")
+    return
+
+def get_profile_data(request):
+    data = request.json
+    return data

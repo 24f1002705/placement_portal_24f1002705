@@ -5,7 +5,7 @@ import RegisterPage from "./components/auth/RegisterPage.js"
 
 import ChangePasswordPage from "./components/auth/ChangePassword.js"
 
-import ProfilePage from "./components/auth/ManageProfile.js"
+import ManageProfile from "./components/auth/ManageProfile.js"
 
 // admin imports
 import AdminDashboard from "./components/admin/AdminDashboard.js"
@@ -51,7 +51,7 @@ export const routes = {
 
     change_password: ChangePasswordPage,
 
-    profile: ProfilePage,
+    profile: ManageProfile,
 
     // admin routes
     admin_dashboard: AdminDashboard,

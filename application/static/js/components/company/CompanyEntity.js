@@ -7,7 +7,7 @@ export default {
 
         "routeData",
 
-        "viewProfile",
+        "manageProfile",
 
         "changePassword"
     ],
@@ -357,7 +357,7 @@ export default {
 
                                 <a
                                     class="dropdown-item"
-                                    @click="manageProfile('student')">
+                                    @click="manageProfile('company')">
 
                                     Manage Profile
 

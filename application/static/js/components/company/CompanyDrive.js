@@ -2,7 +2,8 @@ export default {
 
     props: [
         "navigate",
-        "routeData"
+        "routeData",
+        "manageProfile"
     ],
 
     data() {
@@ -318,7 +319,7 @@ export default {
 
                             <a
                                 class="dropdown-item"
-                                @click="manageProfile('student')">
+                                @click="manageProfile('company')">
 
                                 Manage Profile
 

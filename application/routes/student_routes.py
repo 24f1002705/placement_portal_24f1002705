@@ -1,5 +1,5 @@
 # import necessary modules 
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from application.utils.decorators import student_required
 from application.services import student_services as ss
 from application.tasks.export_tasks import export_student_applications
@@ -11,9 +11,13 @@ student_bp = Blueprint('student', __name__)
 
 # root for student page
 # empty for now
-@student_bp.route('/')
+@student_bp.route('/', methods=['GET', 'POST'])
 def student_index():
-    return
+    if request.method == 'GET':
+        return jsonify(ss.get_profile())
+    
+    else:
+        return jsonify(ss.update_profile(request))
 
 # _____________________________________________________________________________________________
 # 1. routing towards student dashboard

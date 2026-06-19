@@ -2,6 +2,7 @@
     "customFileOrder.rules": {
         "c:\\Users\\siddh\\OneDrive\\Documents\\Obsidian notes\\IITM Notes\\placement_portal_24f1002705": {
             "order": [
+                "celerybeat-schedule",
                 "venv",
                 ".vscode",
                 "__pycache__",
@@ -27,8 +28,7 @@
                 "cache",
                 "static",
                 "templates",
-                "__pycache__",
-                "extensions.py"
+                "__pycache__"
             ],
             "type": "manual"
         },

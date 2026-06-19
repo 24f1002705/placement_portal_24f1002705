@@ -11,9 +11,13 @@ company_bp = Blueprint('company', __name__)
 
 # 0. root for company page
 # empty for now
-@company_bp.route('/')
+@company_bp.route('/', methods=['GET', 'POST'])
 def company_index():
-    return
+    if request.method == 'GET':
+        return jsonify(cs.get_profile())
+    
+    else:
+        return jsonify(cs.update_profile(request))
 
 # 1. dashboard for company
 # Input: company_id from session cookie

@@ -6,7 +6,7 @@ export default {
 
         "routeData",
 
-        "viewProfile",
+        "manageProfile",
 
         "changePassword",
 

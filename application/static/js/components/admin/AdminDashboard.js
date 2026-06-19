@@ -68,18 +68,6 @@ export default {
 
                             <a
                                 class="dropdown-item"
-                                @click="manageProfile('admin')">
-
-                                Manage Profile
-
-                            </a>
-
-                        </li>
-
-                        <li>
-
-                            <a
-                                class="dropdown-item"
                                 @click="changePassword">
 
                                 Change Password
@@ -314,7 +302,7 @@ export default {
 
                                 <button
                                     class="btn btn-sm btn-primary"
-                                    @click="viewAllPendingCompanies">
+                                    @click="viewCompanies">
 
                                     View All
 
