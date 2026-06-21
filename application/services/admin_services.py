@@ -1,6 +1,6 @@
 # import db_services
 import application.services.db_services as dbs
-from application.utils.helpers import return_empty_JSON, orchestrate_JSON, db_to_dict
+from application.utils.helpers import return_empty_JSON, orchestrate_JSON, db_to_dict, rows_to_dict
 from application.utils.constants import company_statuses, student_statuses, drive_statuses, entities, application_statuses, search_entities
 
 
@@ -148,6 +148,10 @@ def reject_drive(drive_id):
 # 5. Application Functions
 def get_applications():
     applications = db_to_dict(dbs.get_groups('application', application_statuses))
+    for status in applications:
+        for application in applications[status]:
+            student_id = application['student_id']
+            application['name'] = rows_to_dict(dbs.get_element('student', 'id', student_id))[0]['name']
     return(orchestrate_JSON(applications))
 # _____________________________________________________________________________________________
 # 6. Search Function

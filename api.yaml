@@ -1,0 +1,202 @@
+openapi: 3.0.0
+
+info:
+title: Placement Portal API
+version: 1.0.0
+description: Placement Portal REST API for students, companies and administrators.
+
+servers:
+
+* url: http://localhost:5000
+
+paths:
+
+/api/auth/login:
+post:
+summary: Login user
+
+/api/auth/register:
+post:
+summary: Register student or company
+
+/api/auth/auth-verify:
+get:
+summary: Verify current session
+
+/api/auth/logout:
+get:
+summary: Logout user
+
+/api/auth/change-password:
+post:
+summary: Change password
+
+/api/admin/dashboard:
+get:
+summary: View admin dashboard
+
+/api/admin/students:
+get:
+summary: View all students
+
+/api/admin/students/{student_id}:
+get:
+summary: View student details
+parameters:
+- name: student_id
+in: path
+required: true
+schema:
+type: integer
+
+/api/admin/students/blacklist/{student_id}:
+get:
+summary: Blacklist student
+
+/api/admin/students/deactivate/{student_id}:
+get:
+summary: Deactivate student
+
+/api/admin/companies:
+get:
+summary: View all companies
+
+/api/admin/companies/{company_id}:
+get:
+summary: View company details
+
+/api/admin/companies/approve/{company_id}:
+get:
+summary: Approve company
+
+/api/admin/companies/reject/{company_id}:
+get:
+summary: Reject company
+
+/api/admin/companies/blacklist/{company_id}:
+get:
+summary: Blacklist company
+
+/api/admin/drives:
+get:
+summary: View all drives
+
+/api/admin/drives/{drive_id}:
+get:
+summary: View drive details
+
+/api/admin/drives/approve/{drive_id}:
+get:
+summary: Approve drive
+
+/api/admin/drives/reject/{drive_id}:
+get:
+summary: Reject drive
+
+/api/admin/applications:
+get:
+summary: View all applications
+
+/api/admin/search/{query}:
+get:
+summary: Search students companies and drives
+
+/api/company:
+get:
+summary: View company profile
+post:
+summary: Update company profile
+
+/api/company/dashboard:
+get:
+summary: View company dashboard
+
+/api/company/drives:
+get:
+summary: View company drives
+
+/api/company/drives/create:
+post:
+summary: Create drive
+
+/api/company/drives/{drive_id}:
+get:
+summary: View drive details
+
+/api/company/drives/edit/{drive_id}:
+post:
+summary: Edit drive
+
+/api/company/drives/close/{drive_id}:
+get:
+summary: Close drive
+
+/api/company/applications/{application_id}:
+get:
+summary: View application
+
+/api/company/applications/offer/{application_id}:
+get:
+summary: Offer job to student
+
+/api/company/applications/reject/{application_id}:
+get:
+summary: Reject application
+
+/api/company/applications/interview/{application_id}:
+get:
+summary: Shortlist application
+
+/api/student:
+get:
+summary: View student profile
+post:
+summary: Update student profile
+
+/api/student/dashboard:
+get:
+summary: View student dashboard
+
+/api/student/companies:
+get:
+summary: View companies
+
+/api/student/companies/{org_id}:
+get:
+summary: View company details
+
+/api/student/drives:
+get:
+summary: View drives
+
+/api/student/drives/{drive_id}:
+get:
+summary: View drive details
+
+/api/student/drives/apply/{drive_id}:
+get:
+summary: Apply to drive
+
+/api/student/applications:
+get:
+summary: View applications
+
+/api/student/applications/{application_id}:
+get:
+summary: View application details
+
+/api/student/applications/accept/{application_id}:
+get:
+summary: Accept offer
+
+/api/student/applications/reject/{application_id}:
+get:
+summary: Reject offer
+
+/api/student/search/{query}:
+get:
+summary: Search drives and companies
+
+/api/student/export:
+get:
+summary: Export applications CSV
