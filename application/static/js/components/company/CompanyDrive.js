@@ -81,11 +81,11 @@ export default {
 
                 "BSc(H)",
 
-                "B.Tech",
+                "B.Tech/BE",
 
                 "MSc",
 
-                "M.Tech",
+                "M.Tech/ME",
 
                 "PhD"
 
