@@ -82,12 +82,6 @@ For Gmail, generate an App Password from Google Account Settings and use that pa
 
 ## Start Redis Server
 
-### Windows (Redis Installed)
-
-```bash
-redis-server
-```
-
 ### WSL
 
 ```bash
@@ -101,6 +95,12 @@ Ready to accept connections
 ```
 
 Leave this terminal running.
+
+if error check if already running using
+```
+redis-cli ping
+```
+has to reply PONG
 
 ---
 
