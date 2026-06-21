@@ -12,7 +12,7 @@ Verify installation:
 
 ```bash
 python --version
-redis-server --version
+redis-server --version (in wsl)
 git --version
 ```
 
@@ -32,23 +32,13 @@ cd placement_portal_24f1002705
 ### Windows
 
 ```bash
-python -m venv .venv
+python -m venv .venv (Powershell)
 ```
 
-Activate:
-
-```bash
-.venv\Scripts\activate
+#### bActivating (In PS)
 ```
-
-### Linux / WSL
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
+(Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned) ; (& "c:\Users\siddh\OneDrive\Documents\Obsidian notes\IITM Notes\placement_portal_24f1002705\.venv\Scripts\Activate.ps1")
 ```
-
----
 
 ## Install Dependencies
 
@@ -82,6 +72,12 @@ For Gmail, generate an App Password from Google Account Settings and use that pa
 
 ## Start Redis Server
 
+### Windows (Redis Installed)
+
+```bash
+redis-server
+```
+
 ### WSL
 
 ```bash
@@ -95,12 +91,6 @@ Ready to accept connections
 ```
 
 Leave this terminal running.
-
-if error check if already running using
-```
-redis-cli ping
-```
-has to reply PONG
 
 ---
 
